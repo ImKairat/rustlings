@@ -1,0 +1,36 @@
+name: Disable Compare & Pull Request
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check branch name
+      id: check_branch
+      run: |
+        echo "Branch is ${{ github.ref_name }}"
+        if [[ "${{ github.ref_name }}" == "branch-to-disable-pr-message-for" ]]; then
+          echo "This is the branch to handle."
+          echo "trigger_action=true" >> $GITHUB_ENV
+        else
+          echo "This branch doesn't need handling."
+          echo "trigger_action=false" >> $GITHUB_ENV
+
+    - name: Perform action
+      if: env.trigger_action == 'true'
+      run: |
+        echo "Performing the action for the branch: ${{ github.ref_name }}"
+        # Example: Merge changes automatically
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git checkout main
+        git merge ${{ github.ref_name }} --no-ff -m "Automated merge by GitHub Action"
+        git push origin main
+
+    - name: Log completion
+      run: echo "Workflow completed."
