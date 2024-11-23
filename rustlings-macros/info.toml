@@ -553,6 +553,18 @@ hint = """
 `use` statement for these two to bring them into scope. You can use nested
 paths to bring these two in using only one line."""
 
+[[exercises]]
+name = "modules4"
+dir = "10_modules"
+test = false
+hint = """
+In the main function, you should have access only to the greet function. 
+To use it, you need to import it from the extern_mod module.
+
+Learn more in The Book:
+https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html
+"""
+
 # HASHMAPS
 
 [[exercises]]
